@@ -53,6 +53,24 @@ python main.py
 
 ```
 
+# 机械臂切换
+## 机械臂信息查询
+```
+python inspect_model.py path/to/your/robot.xml --all
+```
+## YAML 配置
+在 `/config/config.yaml` 中，只需把 YAML 改成：
+```
+simulation:
+  model_path: "model/kuka/iiwa14.xml"
+robot:
+  type: "iiwa14"
+  joint_names: ['joint1','joint2','joint3','joint4','joint5','joint6','joint7']
+  ee_site: "attachment_site"
+
+```
+
+
 ## 展示
 ### panda机械臂
 <img width="522" height="404" alt="image" src="https://github.com/user-attachments/assets/c49f032a-6a83-4e26-b534-5e36f6c00ddf" />
