@@ -1,0 +1,88 @@
+simulation:
+  model_path: "model\\panda\\panda.xml"
+  # model_path: "model/kuka/iiwa14.xml"
+  duration: null            # null = 运行到窗口关闭
+
+robot:
+  type: "panda"
+  joint_names: ["joint1","joint2","joint3","joint4","joint5","joint6","joint7"]  
+  ee_site: "gripper"        
+# robot:
+#   type: "iiwa14"
+#   joint_names: ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7']
+#   ee_site: "attachment_site"
+
+trajectory:
+  type: "circle"            # 可选: circle / line / lissajous / helix / waypoints
+  # ---- circle ----
+  center: [0.0, 0.0, 0.6]
+  radius: 0.6
+  omega: 0.5
+  z_amplitude: 0.05
+  z_freq: 5.0
+  euler: [0.5, 0.2, 0.4] 
+  # ---- line ----  
+  # start: [0.4, -0.3, 0.6]
+  # end:   [0.5,  0.3, 0.7]
+  # duration: 6.0
+  # euler_start: [0.0, 0.0, 0.0]
+  # euler_end:   [0.0, 0.3, 0.0]
+  # ---- lissajous ----
+  # amplitude: [0.3, 0.3, 0.1]
+  # freq: [1.0, 1.0, 2.0]     # 频率比决定曲线形状, [1,2] 为 8 字
+  # phase: [0.0, 0.0, 0.0]
+  # center: [0.25, -0.3, 0.7]
+  # omega: 1.0
+  # ---- helix ----  用于演示超出工作空间
+  # center: [0.0, 0.0, 0.5]
+  # radius: 0.4
+  # omega: 1.0
+  # pitch: 0.2                # 每圈上升高度 (m)
+  # ---- waypoints ----
+  # waypoints:                # 每点: [x, y, z, ex, ey, ez]
+  #   - [0.5, -0.3, 0.6, 0.0, 0.0, 0.0]
+  #   - [0.7,  0.3, 0.7, 0.0, 0.4, 0.0]
+  #   - [0.5,  0.3, 0.8, 0.2, 0.0, 0.2]
+  #   - [0.5, -0.3, 0.6, 0.0, 0.0, 0.0]
+  # segment_duration: 4.0
+
+observer:
+  type: "ftdso"   # 可选: se3 / ftdso / passthrough
+  # SE(3) 观测器参数
+  k_x1: 5.0
+  r_x1: 0.5
+  k_x2: 20.0
+  r_x2: 1.5
+  k_v1: 100.0
+  r_v1: 0.5
+  k_v2: 100.0
+  r_v2: 1.5
+  #  ftdso 参数
+  dim: 6
+  K_o1: 5.0
+  K_o2: 20.0
+  p_o1: 0.5
+  p_o2: 1.0
+  init: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+kinematic_controller:
+  type: "velocity_pd"
+  kp: 5.0
+  damping: 1.0e-4
+  ee_vel_limit: [1.0, 2.0]     # rad/s, 标量或逐关节列表 (必填)
+  dls_lambda: 0.01
+  dls_eps: 1e-3
+  k_manip: 1.0 
+
+dynamic_controller:
+  type: "dsc"               # 可选: pd / dsc / gravity_compensation
+  # ---- pd ----
+  kp: 10.0
+  # ---- dsc ----
+  filter_gain: 20.0         # k_f: 一阶滤波器增益
+  kd: 10.0                   # 面误差增益 K_d
+  tau_limit: 300.0           # 所有动力学控制器共用
+
+logging:
+  sample_every: 10
+  plot: true
