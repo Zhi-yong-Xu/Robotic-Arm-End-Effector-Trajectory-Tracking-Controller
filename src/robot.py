@@ -87,7 +87,6 @@ class BaseRobot:
 
 
 @robot_registry.register("panda")
-@robot_registry.register("ur3")
 @robot_registry.register("iiwa14")
 class PandaRobot(BaseRobot):
     """joint_names 与 ee_site 为必填配置。"""
